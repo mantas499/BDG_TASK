@@ -43,19 +43,23 @@ class TokenListController extends Controller
     {
         $token = Token::find($id);
 
+        if(is_null($token))
+        {
+            return \Redirect::route('tokens.index')->with('message', 'Token do not exist!');; 
+        }
         return view('tokens.edit')->with('token', $token);
     }
 
-    public function update($id)
+    public function update($id, CreateTokenFormRequest $request)
     {
         $token = Token::find($id);
 
         $token->id = $id;
-        $token->symbol = Input::get('symbol');
-        $token->name = Input::get('name');
-        $token->homepage = Input::get('homepage');
-        $token->total_supply = Input::get('total_supply');
-        $token->current_price = Input::get('current_price');
+        $token->symbol = $request->get('symbol');
+        $token->name = $request->get('name');
+        $token->homepage = $request->get('homepage');
+        $token->total_supply = $request->get('total_supply');
+        $token->current_price = $request->get('current_price');
 
         $token->save();
 
